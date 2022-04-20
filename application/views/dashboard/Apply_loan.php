@@ -62,6 +62,9 @@
 							<?php if($this->uri->segment(4)=="step4" && !$this->uri->segment(5)==''): ?>
 								<?php include("loan_forms/step4.php"); ?>
 							<?php endif; ?>
+							<?php if($this->uri->segment(4)=="step5" && !$this->uri->segment(5)==''): ?>
+								<?php include("loan_forms/step5.php"); ?>
+							<?php endif; ?>
 						</div>
 					</div>
 				</div>

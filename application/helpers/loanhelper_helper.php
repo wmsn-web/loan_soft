@@ -8,3 +8,13 @@ if(!function_exists('loan_settings')) {
       return $get;
   } 
 }
+
+if(!function_exists('get_agents')) {
+  function get_agents() { 
+      
+      $CI = get_instance();
+      $CI->db->order_by("agent_name","ASC");
+      $get = $CI->db->get("agents")->result_array();
+      return $get;
+  } 
+}

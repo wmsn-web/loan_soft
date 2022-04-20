@@ -55,7 +55,20 @@
 		</div>
 		<div class="form-group col-md-4">
 			<label>Rate of Interest (<span id="roi_lbl">%</span> / Annual)</label>
-			<input type="text" id="roi" name="rate_of_interest" class="form-control" value="0" required>
+			<input type="text" id="roi" name="rate_of_interest" class="form-control" value="<?= $loanData['rate_of_interest']; ?>" required>
+		</div>
+		<div class="form-group col-md-4">
+			<label>Select Agent</label>
+			<select name="agent_code" class="form-control" value="0" required>
+				<option value="">Select Agent</option>
+				<?php $agents = get_agents(); ?>
+				<?php if(!empty($agents)): ?>
+					<?php foreach($agents as $key): ?>
+						<?php if($loanData['agent_code']==$key['agent_code']){$slct = "selected";}else{$slct = "";} ?>
+						<option <?= $slct; ?> value="<?= $key['agent_code']; ?>"><?= $key['agent_name']; ?></option>
+					<?php endforeach; ?>
+				<?php endif; ?>
+			</select>
 		</div>
 		<div class="form-group col-md-12">
 			<?php if($this->uri->segment(5)): ?>
