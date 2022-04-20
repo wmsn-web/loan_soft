@@ -46,3 +46,12 @@ if(!function_exists('back')) {
       return $backs;
   } 
 }
+
+if(!function_exists('unslugify')) {
+  function unslugify($str)
+  {
+    $xpl = str_replace("-", " ", $str);
+    $newStr = ucwords($xpl);
+    return $newStr;
+  }
+}

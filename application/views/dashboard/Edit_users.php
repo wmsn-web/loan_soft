@@ -40,11 +40,11 @@
 									</div>
 									<div class="form-group col-md-6">
 										<label>Email</label>
-										<input type="text"  name="email" class="form-control" required value="<?= $data['email']; ?>">
+										<input type="email"  name="email" class="form-control" required value="<?= $data['email']; ?>">
 									</div>
 									<div class="form-group col-md-6">
 										<label>Phone / Mobile Number</label>
-										<input type="text" name="phone" class="form-control" required value="<?= $data['phone']; ?>">
+										<input type="text" name="phone" maxlength="10" class="form-control" required value="<?= $data['phone']; ?>">
 									</div>
 									<div class="form-group col-md-6">
 										<label>Username</label>
@@ -79,6 +79,11 @@
 												<label>Review Account</label>
 											</div>
 											<div class="col-md-4">
+												<?php if($parm->disburs_loan == '1'){$chk = "checked";}else{$chk = "";} ?>
+												<input <?= $chk; ?>  type="checkbox" name="disburs_loan" value="1">
+												<label>Disburs Loan</label>
+											</div>
+											<div class="col-md-4">
 												<?php if($parm->manage_repayment == '1'){$chk = "checked";}else{$chk = "";} ?>
 												<input <?= $chk; ?> type="checkbox" name="manage_repayment" value="1">
 												<label>Accept Repayments</label>
@@ -98,6 +103,20 @@
 									<div class="form-group col-md-12">
 										<input type="hidden" name="id" value="<?= $data['id']; ?>">
 										<button id="reg"  class="btn_new">Update User</button>
+									</div>
+								</div>
+							</form>
+							<form action="<?= base_url('dashboard/Add_user/update_pass'); ?>" method="post">
+								<h5><b>Change Password</b></h5>
+								<div class="row">
+									<div class="form-group col-md-4">
+										<label>New Password</label>
+										<input type="password" name="new_pass" class="form-control" required>
+									</div>
+									<div class="form-group col-md-4">
+										<label>&nbsp;</label><br>
+										<input type="hidden" name="id" value="<?= $data['id']; ?>">
+										<button class="btn_new">Update Password</button>
 									</div>
 								</div>
 							</form>

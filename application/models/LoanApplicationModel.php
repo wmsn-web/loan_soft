@@ -23,4 +23,12 @@ class LoanApplicationModel extends CI_model
 		$data = $this->db->get("loan_documents")->result_array();
 		return $data;
 	}
+
+	public function get_submitted_loans($conditions)
+	{
+		$this->db->where($conditions);
+		//$this->db->where("loan_status","pending");
+		$data = $this->db->get("loans")->result_array();
+		return $data;
+	}
 }

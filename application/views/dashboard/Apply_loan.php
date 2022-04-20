@@ -178,17 +178,88 @@
 		$("#doccs").html(imgs);
 		$("#showDocs").modal('show');
 	}
-	$("#submit_step").click(function(){
-		var pics = $("#uplPic").val();
-		if(pics == '')
-		{
-			alert("please Upload Passport size Photo");
-		}
-		else
-		{
+	<?php if(empty($loanData['pro_img']) || empty($loanData['g_pro_img'])): ?>
+		$("#submit_step").click(function(){
+			var pics = $("#uplPic").val();
+			if(pics == '')
+			{
+				alert("please Upload Passport size Photo");
+			}
+			else
+			{
+				$("#step_form").submit();
+			}
+		});
+	<?php else: ?>
+		$("#submit_step").click(function(){
 			$("#step_form").submit();
-		}
-	})
+		});
+	<?php endif; ?>
+	function checkKyc(aplId,field,vals)
+	{
+		$.post("<?= base_url('dashboard/AjaxController/check_kyc_with_guarantor'); ?>",{
+			field: field,
+			apl_id: aplId,
+			vals: vals
+		},function(resp){
+			if(resp > 0)
+			{
+				if(field == "adhar_no")
+				{
+					var msg = "Applicant Adhaar number & Guarantor Adhaar number should not be same!";
+				}
+				else if(field == "pan_no")
+				{
+					var msg = "Applicant PAN number & Guarantor PAN number should not be same!";
+				}
+				else if(field == "v_id")
+				{
+					var msg = "Applicant Voter ID number & Guarantor Voter ID number should not be same!";
+				}
+				else
+				{
+					var msg = "";
+				}
+				alert(msg);
+				$("#submit_step").attr("disabled",true);
+			}
+			else
+			{
+				$("#submit_step").attr("disabled",false);
+			}
+		});
+	}
+
+	function get_interest(vals)
+	{
+		$.post("<?= base_url('dashboard/AjaxController/get_interest/'); ?>",{
+			month_num: vals
+		},function(resp){
+			$("#roi_lbl").html(resp+"%");
+			$("#roi").val(resp);
+		})
+	}
+
+	function CalEmi()
+	{
+		var ra = $("#ra").val();
+		var pom = $("#pom").val();
+		var roi = $("#roi").val();
+
+		$.post("<?= base_url('dashboard/AjaxController/calculate_estimate_emi/'); ?>",{
+			ra: ra,
+			pom: pom,
+			roi: roi
+		},function(resp){
+			obj = JSON.parse(resp);
+			$("#princ_amt").html("&#8377;"+ra);
+			$("#intr_rate_amt").html(roi+"%");
+			$("#intr_amt").html("&#8377;"+obj.intr_month+"/Month");
+			$("#emi_amt").html("&#8377;"+obj.emi+"/Month");
+			$("#tot_amt").html("&#8377;"+obj.totAmt);
+			$("#calCulateDiv").show();
+		})
+	}
 </script>
 </body>
 </html>

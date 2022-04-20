@@ -40,11 +40,11 @@
 									</div>
 									<div class="form-group col-md-6">
 										<label>Email</label>
-										<input type="text"  name="email" class="form-control" required>
+										<input type="email"  name="email" class="form-control" required>
 									</div>
 									<div class="form-group col-md-6">
 										<label>Phone / Mobile Number</label>
-										<input type="text" name="phone" class="form-control" required>
+										<input type="text" name="phone" maxlength="10" class="form-control" required>
 									</div>
 									<div class="form-group col-md-6">
 										<label>Username</label>
@@ -79,6 +79,10 @@
 											<div class="col-md-4">
 												<input type="checkbox" name="review_account" value="1">
 												<label>Review Account</label>
+											</div>
+											<div class="col-md-4">
+												<input type="checkbox" name="disburs_loan" value="1">
+												<label>Disburs Loan</label>
 											</div>
 											<div class="col-md-4">
 												<input type="checkbox" name="manage_repayment" value="1">

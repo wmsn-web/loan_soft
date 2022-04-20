@@ -95,15 +95,15 @@
 		</div>
 		<div class="form-group col-md-4">
 			<label>Voter ID Card Number</label>
-			<input type="text" name="g_v_id" class="form-control"  value="<?= $loanData['g_v_id']; ?>" required>
+			<input type="text" name="g_v_id" class="form-control"  value="<?= $loanData['g_v_id']; ?>" required onblur="checkKyc('<?= $this->uri->segment(5); ?>','v_id',this.value)">
 		</div>
 		<div class="form-group col-md-4">
 			<label>Adhaar Number</label>
-			<input type="text"  name="g_adhar_no" class="form-control"  value="<?= $loanData['g_adhar_no']; ?>" required>
+			<input type="text"  name="g_adhar_no" class="form-control"  value="<?= $loanData['g_adhar_no']; ?>" onblur="checkKyc('<?= $this->uri->segment(5); ?>','adhar_no',this.value)" required>
 		</div>
 		<div class="form-group col-md-4">
 			<label>PAN Number</label>
-			<input type="text" name="g_pan_no" class="form-control"  value="<?= $loanData['g_pan_no']; ?>" required>
+			<input type="text" name="g_pan_no" class="form-control"  value="<?= $loanData['g_pan_no']; ?>" required onblur="checkKyc('<?= $this->uri->segment(5); ?>','pan_no',this.value)">
 		</div>
 		<div class="form-group col-md-12">
 			<input type="hidden"  name="application_id" class="form-control" required value="<?= $this->uri->segment(5); ?>">

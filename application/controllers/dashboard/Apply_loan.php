@@ -41,10 +41,53 @@ class Apply_loan extends CI_controller
 		echo "string";
 	}
 
+	public function Submitted_accounts()
+	{
+		$prof = $this->UserModel->get_profiles($this->session->userdata("userAdmin"));
+		if($prof['role_slug']=="data-entry-operator")
+		{
+			$userId = $this->session->userdata("userAdmin");
+			$conditions = array("submitted_by"=>$userId);
+			$data = $this->LoanApplicationModel->get_submitted_loans($conditions);
+		}
+		else
+		{
+			$conditions = array();
+			$data = $this->LoanApplicationModel->get_submitted_loans($conditions);
+		}
+
+		$this->load->view("dashboard/submitted_loans",["data"=>$data]);
+		//echo "<pre>";
+		//print_r($data);
+		
+	}
+
+	public function submit_to_review($application_id='')
+	{
+		$this->db->where("application_id",$application_id);
+		$this->db->update("loans",["loan_status"=>"under-review"]);
+		return redirect(base_url('dashboard/Apply_loan/Submitted_accounts'));
+	}
+
 	public function delete_doc($ids)
 	{
 		$this->db->where("id",$ids);
 		$this->db->delete("loan_documents");
+		return redirect(back());
+	}
+
+	public function approve_loan($application_id='')
+	{
+		$loan_no = "LN-".mt_rand(00000000000,99999999999);
+		$this->db->where("application_id",$application_id);
+		$this->db->update("loans",["loan_status"=>"approved","loan_ac_no"=>$loan_no]);
+		return redirect(back());
+	}
+
+	public function reject_loan($application_id='')
+	{
+		$this->db->where("application_id",$application_id);
+		$this->db->update("loans",["loan_status"=>"rejected","loan_ac_no"=>null]);
 		return redirect(back());
 	}
 }

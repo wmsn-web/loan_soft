@@ -27,10 +27,12 @@ class Add_user extends CI_controller
 		$data['phone'] = $inp['phone'];
 		$data['user_admin'] = $inp['user_admin'];
 		$data['role'] = $inp['role'];
+		$data['role_slug'] = slugify($inp['role']);
 		$data['password'] = password_hash($inp['password'], PASSWORD_DEFAULT);
 		$parm = array(
 			"create_account"	=>@$inp['create_account'],
 			"review_account"	=>@$inp['review_account'],
+			"disburs_loan"		=>@$inp['disburs_loan'],
 			"manage_repayment"	=>@$inp['manage_repayment'],
 			"user_manage"		=>@$inp['user_manage'],
 			"enquery"			=>@$inp['enquery']
@@ -76,10 +78,12 @@ class Add_user extends CI_controller
 		$data['phone'] = $inp['phone'];
 		$data['user_admin'] = $inp['user_admin'];
 		$data['role'] = $inp['role'];
+		$data['role_slug'] = slugify($inp['role']);
 		
 		$parm = array(
 			"create_account"	=>@$inp['create_account'],
 			"review_account"	=>@$inp['review_account'],
+			"disburs_loan"		=>@$inp['disburs_loan'],
 			"manage_repayment"	=>@$inp['manage_repayment'],
 			"user_manage"		=>@$inp['user_manage'],
 			"enquery"			=>@$inp['enquery']
@@ -91,6 +95,17 @@ class Add_user extends CI_controller
 		$this->db->where("id",$id);
 		$this->db->update("admin",$data);
 		$this->session->set_flashdata("Feed","User Updated Successfully");
+		return redirect(back());
+	}
+
+	public function update_pass()
+	{
+		$id = $this->input->post("id");
+		$new_pass = $this->input->post("new_pass");
+		$pass = password_hash($new_pass, PASSWORD_DEFAULT);
+		$this->db->where("id",$id);
+		$this->db->update("admin",["password"=>$pass]);
+		$this->session->set_flashdata("Feed","Password Updated Successfully");
 		return redirect(back());
 	}
 }

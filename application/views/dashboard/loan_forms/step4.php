@@ -26,5 +26,29 @@
 			</div>
 		</div>
 	</div>
-
 </form>
+<div class="row">
+	<div class="col-md-12">
+		<?php if($loanData['loan_status']=="pending"): ?>
+			<a href="<?= base_url('dashboard/Apply_loan/Submitted_accounts'); ?>">
+				<button class="btn_new">Submit</button>
+			</a>
+			<a href="<?= base_url('dashboard/Apply_loan/submit_to_review/'.$this->uri->segment(5)); ?>">
+			<button class="btn_new">Submit to Review</button></a>
+		<?php elseif($loanData['loan_status']=="under-review"): ?>
+			<a href="">
+				<button class="btn btn-danger btn-sm">Reject Application</button>
+			</a>
+			<a href="<?= base_url('dashboard/Apply_loan/approve_loan/'.$this->uri->segment(5)); ?>">
+				<button class="btn btn-success btn-sm">Approve Application</button>
+			</a>
+		<?php elseif($loanData['loan_status']=="approved"): ?>
+			<a href="<?= base_url('dashboard/Apply_loan/reject_loan/'.$this->uri->segment(5)); ?>">
+				<button class="btn btn-danger btn-sm">Reject Application</button>
+			</a>
+			<a href="<?= base_url('dashboard/Apply_loan/approve_loan/'.$this->uri->segment(5)); ?>">
+				<button class="btn btn-success btn-sm">Submit Agrement & Document</button>
+			</a>
+		<?php endif; ?>
+	</div>
+</div>
