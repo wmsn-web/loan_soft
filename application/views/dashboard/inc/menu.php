@@ -49,7 +49,8 @@
 			<?php endif; ?>
 			<?php if($prof['role'] == "Super_admin" || $prof['role_slug'] == "manager"): ?>
 				<li>Acconts</li>
-				<li><a href="<?= base_url('dashboard/Transactions'); ?>"><i class="fas fa-exchange"></i>Account Transaction</a></li>
+				<li><a href="<?= base_url('dashboard/Fund'); ?>"><i class="fas fa-piggy-bank"></i> Fund</a></li>
+				<li><a href="<?= base_url('dashboard/Transactions'); ?>"><i class="fas fa-exchange-alt"></i> A/c Transaction</a></li>
 			<?php endif; ?>
 			<?php if($prof['role'] == "Super_admin"): ?>
 				<li>Settings</li>

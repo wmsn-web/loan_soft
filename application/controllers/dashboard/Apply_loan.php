@@ -103,39 +103,70 @@ class Apply_loan extends CI_controller
 		else
 		{
 			$row = $get->row();
-			$process_charge = $row->approve_amount - $row->disburs_amount;
-			$this->db->where("agent_code",$row->agent_code);
-			$gtAgnt = $this->db->get("agents")->row();
-			$prcnt = $gtAgnt->commission/100;
-			$agent_commission = $process_charge*$prcnt;
+			//Check Wallet Balance
+			$this->db->select_sum("in_amt");
+			$in = $this->db->get("transactions")->row();
+			$tot_in = $in->in_amt;
 
-			//Admin Trans
-			$notes1 = "Loan Processing Charge against <b>".$row->loan_ac_no."</b>";
-			$data1 = array(
-				"notes"		=>htmlentities($notes1),
-				"dates"		=>date('Y-m-d'),
-				"year"		=>date('Y'),
-				"loan_no"	=>$row->loan_ac_no,
-				"in_amt"	=>$process_charge
-			);
-			$notes2 = "Agent Commission Applied against <b>".$row->loan_ac_no."</b>";
-			$data2 = array(
-				"notes"		=>htmlentities($notes2),
-				"dates"		=>date('Y-m-d'),
-				"year"		=>date('Y'),
-				"loan_no"	=>$row->loan_ac_no,
-				"agent_code"	=>$row->agent_code,
-				"out_amt"	=>$agent_commission
-			);
+			$this->db->select_sum("out_amt");
+			$out = $this->db->get("transactions")->row();
+			$tot_out = $out->out_amt;
 
-			$this->db->where("application_id",$application_id);
-			$this->db->update("loans",["loan_status"=>"disbursed"]);
+			$reamin = $tot_in - $tot_out;
+			$bal = $reamin;
+			//Check Wallet Balance
+			if($bal < $row->approve_amount)
+			{
+				$this->session->set_flashdata("err","Insufficient Fund!");
+				return redirect(back());
+			}
+			else
+			{
+				$process_charge = $row->approve_amount - $row->disburs_amount;
+				$this->db->where("agent_code",$row->agent_code);
+				$gtAgnt = $this->db->get("agents")->row();
+				$prcnt = $gtAgnt->commission/100;
+				$agent_commission = $process_charge*$prcnt;
 
-			$this->db->insert("transactions",$data1);
-			$this->db->insert("transactions",$data2);
+				//Admin Trans
+				$notes1 = "Loan Processing Charge against <b>".$row->loan_ac_no."</b>";
+				$data1 = array(
+					"notes"		=>htmlentities($notes1),
+					"dates"		=>date('Y-m-d'),
+					"year"		=>date('Y'),
+					"loan_no"	=>$row->loan_ac_no,
+					"in_amt"	=>$process_charge
+				);
+				$notes2 = "Agent (".$row->agent_code.") Commission Applied against <b>".$row->loan_ac_no."</b>";
+				$data2 = array(
+					"notes"		=>htmlentities($notes2),
+					"dates"		=>date('Y-m-d'),
+					"year"		=>date('Y'),
+					"loan_no"	=>$row->loan_ac_no,
+					"agent_code"	=>$row->agent_code,
+					"out_amt"	=>$agent_commission
+				);
+				$notes3 = "Amount disbursed to customer A/c Against <b>".$row->loan_ac_no."</b>";
+				$data3 = array(
+					"notes"		=>htmlentities($notes3),
+					"dates"		=>date('Y-m-d'),
+					"year"		=>date('Y'),
+					"loan_no"	=>$row->loan_ac_no,
+					"out_amt"	=>$row->approve_amount
+				);
 
-			$this->session->set_flashdata("Feed","Loan Disbursed Successfully");
-			return redirect(back());
+				$this->db->where("application_id",$application_id);
+				$this->db->update("loans",["loan_status"=>"disbursed"]);
+
+				$this->db->insert("transactions",$data3);
+				$this->db->insert("transactions",$data2);
+				$this->db->insert("transactions",$data1);
+				
+
+				$this->session->set_flashdata("Feed","Loan Disbursed Successfully");
+				return redirect(back());
+			}
+				
 		}
 	}
 }

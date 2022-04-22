@@ -41,13 +41,13 @@ body {
 	float: right;
 }
 .side_menu {
-	width: 15%;
+	width: 18%;
 	padding: 10px;
 	float: left;
 	background: #e8e7ef;
 }
 .main_content{
-	width: 85%;
+	width: 82%;
 	float: left;
 	padding: 15px;
 }
