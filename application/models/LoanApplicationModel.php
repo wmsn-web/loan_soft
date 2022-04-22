@@ -31,4 +31,5 @@ class LoanApplicationModel extends CI_model
 		$data = $this->db->get("loans")->result_array();
 		return $data;
 	}
+	
 }

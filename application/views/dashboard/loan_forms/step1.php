@@ -1,5 +1,5 @@
 <?php if($this->uri->segment(5)): ?>
-	<form action="<?= base_url('dashboard/Loan_application_submit/update_step1'); ?>" method="post">
+	<form  action="<?= base_url('dashboard/Loan_application_submit/update_step1'); ?>" method="post">
 <?php else: ?>
 	<form action="<?= base_url('dashboard/Loan_application_submit/submit_step1'); ?>" method="post">
 <?php endif; ?>
@@ -79,7 +79,7 @@
 				<input type="hidden" name="submitted_by" value="<?= $this->session->userdata('userAdmin'); ?>">
 			<?php endif; ?>
 			
-			<button class="btn_new">Save & Next</button>
+			<button  class="btn_new">Save & Next</button>
 			<button onclick="CalEmi()" type="button">Calculate</button>
 		</div>
 
@@ -119,3 +119,8 @@
 		</div>
 	</div>
 </div>
+<?php if($loanData['status_code'] > 1 && $prof['role_slug']=="data-entry-operator"): ?>
+	<script type="text/javascript">
+		location.href = "<?= base_url('dashboard/Apply_loan/Submitted_accounts'); ?>";
+	</script>
+<?php endif; ?>

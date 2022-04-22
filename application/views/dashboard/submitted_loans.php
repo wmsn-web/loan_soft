@@ -39,6 +39,7 @@
 										<tr>
 											<th>SL</th>
 											<th>Application ID</th>
+											<th>Loan A/c</th>
 											<th>Name</th>
 											<th>Contact Number</th>
 											<th>Status</th>
@@ -55,18 +56,25 @@
 														<?= $key['application_id']; ?><br>
 														<b class="text-info"> <?=  $gtadmin['name']; ?>
 													</td>
+													<td><?= $key['loan_ac_no']; ?></td>
 													<td><?= $key['full_name']; ?></td>
 													<td><?= $key['cont_number']; ?></td>
 													<td><?= unslugify($key['loan_status']); ?></td>
 													<td>
-														<?php if($prof['role_slug']=="data-entry-operator" && $key['loan_status']=="pending"): ?>
+														<?php if($prof['role_slug']=="data-entry-operator" && $key['loan_status']=="pending" || $prof['role_slug']=="super_admin"): ?>
 															<a href="<?= base_url('dashboard/Apply_loan/create_account/step1/'.$key['application_id']); ?>">
 															<button class="btn btn-warning btn-sm">Edit / View</button></a>
 														<?php else: ?>
 															<?php if(@$parmsn->review_account=="1" || $prof['role']=="Super_admin"): ?>
 																<?php if($key['loan_status']=="under-review"): ?>
 																	<a href="<?= base_url('dashboard/Apply_loan/create_account/step1/'.$key['application_id']); ?>"><button class="btn btn-warning btn-sm">Review Loan</button></a>
-																<?php else: ?>
+																<?php elseif(@$parmsn->disburs_loan=="1" || $prof['role']=="Super_admin"): ?>
+																	<?php if($key['loan_status']=="approved"): ?>
+																		<a href="">
+																			<button class="btn btn-primary btn-sm">Disburse Loan</button>
+																		</a>
+																		<a href="<?= base_url('dashboard/Apply_loan/create_account/step1/'.$key['application_id']); ?>"><button class="btn btn-warning btn-sm">Loan Details</button></a>
+																	<?php endif; ?>
 																	<?php endif; ?>
 																
 															<?php else: ?>

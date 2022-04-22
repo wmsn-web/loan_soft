@@ -18,3 +18,13 @@ if(!function_exists('get_agents')) {
       return $get;
   } 
 }
+if(!function_exists('all_final_docs'))
+{
+  function all_final_docs($application_id)
+  {
+    $CI = get_instance();
+    $CI->db->where("application_id",$application_id);
+    $data = $CI->db->get("final_docs")->result_array();
+    return $data;
+  }
+}

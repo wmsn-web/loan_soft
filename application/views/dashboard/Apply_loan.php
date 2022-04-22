@@ -9,6 +9,7 @@
 <body>
 	<?php include("inc/topbar.php"); ?>
 <!--Top Bar end-->
+
 <div class="container-fluid">
 	<div class="row">
 		<?php include("inc/menu.php"); ?>
@@ -45,9 +46,10 @@
 										<a href="<?= base_url('dashboard/Apply_loan/create_account/step4/'.$appl_id); ?>">Documents</a>
 									</li>
 									<?php if($uri4 == "step5"){$act = "current";}else{$act = "";} ?>
-									<li <?php if($stp >= 5){echo "class='active ".$act."'";}else{ echo "class='disb'"; }?>>
-										<a href="<?= base_url('dashboard/Apply_loan/create_account/step5/'.$appl_id); ?>">Office Uses</a>
-									</li>
+										<li <?php if($stp >= 5){echo "class='active ".$act."'";}else{ echo "class='disb'"; }?>>
+											<a href="<?= base_url('dashboard/Apply_loan/create_account/step5/'.$appl_id); ?>">Office Uses</a>
+										</li>
+									
 								</ul>
 							<?php endif; ?>
 							<?php if($this->uri->segment(4)=="step1"): ?>
@@ -263,6 +265,29 @@
 			$("#calCulateDiv").show();
 		})
 	}
+
+	function final_doc_upload()
+	{
+		$("#final_doc_form").submit();
+	}
+	function del_final_doc(ids)
+	{
+		$.post("<?= base_url('dashboard/AjaxController/del_finalDocs/'); ?>",{
+			id: ids
+		},function(resp){
+			$("#dcs__"+ids).remove();
+		})
+		
+	}
+	<?php if($mdl = $this->session->flashdata("mdl")): ?>
+		$("#mdlTxt").html('<?= $mdl; ?>');
+		$("#congr_modal").modal('show');
+	<?php endif; ?>
+	<?php if($loanData['loan_status']=="disbursed"): ?>
+		$("input").attr("disabled",true);
+		$("select").attr("disabled",true);
+		$("button").attr("disabled",true);
+	<?php endif; ?>
 </script>
 </body>
 </html>

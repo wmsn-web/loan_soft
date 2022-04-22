@@ -35,20 +35,16 @@
 			</a>
 			<a href="<?= base_url('dashboard/Apply_loan/submit_to_review/'.$this->uri->segment(5)); ?>">
 			<button class="btn_new">Submit to Review</button></a>
-		<?php elseif($loanData['loan_status']=="under-review"): ?>
-			<a href="">
-				<button class="btn btn-danger btn-sm">Reject Application</button>
-			</a>
-			<a href="<?= base_url('dashboard/Apply_loan/approve_loan/'.$this->uri->segment(5)); ?>">
-				<button class="btn btn-success btn-sm">Approve Application</button>
-			</a>
-		<?php elseif($loanData['loan_status']=="approved"): ?>
-			<a href="<?= base_url('dashboard/Apply_loan/reject_loan/'.$this->uri->segment(5)); ?>">
-				<button class="btn btn-danger btn-sm">Reject Application</button>
-			</a>
-			<a href="<?= base_url('dashboard/Apply_loan/approve_loan/'.$this->uri->segment(5)); ?>">
-				<button class="btn btn-success btn-sm">Submit Agrement & Document</button>
+		<?php endif; ?>
+		<?php if(@$parmsn->review_account ==1 || $prof['role'] == "Super_admin"): ?>
+			<a href="<?= base_url('dashboard/Apply_loan/create_account/step5/'.$this->uri->segment(5)); ?>">
+				<button class="btn_new">Go to Office use</button>
 			</a>
 		<?php endif; ?>
 	</div>
 </div>
+<?php if($loanData['status_code'] > 1 && $prof['role_slug']=="data-entry-operator"): ?>
+	<script type="text/javascript">
+		location.href = "<?= base_url('dashboard/Apply_loan/Submitted_accounts'); ?>";
+	</script>
+<?php endif; ?>

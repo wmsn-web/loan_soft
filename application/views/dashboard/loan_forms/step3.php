@@ -1,4 +1,4 @@
-<?php $apl_id = $this->uri->segment(5); ?>
+<?php $apl_id = $this->uri->segment(5); ?> 
 <form id="step_form" action="<?= base_url('dashboard/Loan_application_submit/submit_step3'); ?>" method="post" enctype="multipart/form-data" data-parsley-validate novalidate>
 	<h4>Application ID: <?= $this->uri->segment(5); ?></h4><?= br(2); ?>
 	<div class="row">
@@ -112,3 +112,8 @@
 		</div>
 	</div>
 </form>
+<?php if($loanData['status_code'] > 1 && $prof['role_slug']=="data-entry-operator"): ?>
+	<script type="text/javascript">
+		location.href = "<?= base_url('dashboard/Apply_loan/Submitted_accounts'); ?>";
+	</script>
+<?php endif; ?>

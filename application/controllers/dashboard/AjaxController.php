@@ -61,12 +61,23 @@ class AjaxController extends CI_controller
 		$totAmt = $emi*$pom;
 
 		$data = array(
-			"intr_month" => $intBymonth,
-			"month_principal" => $monthlyPrinc,
-			"emi"	=> $emi,
-			"totAmt" =>$totAmt
+			"intr_month" => number_format($intBymonth,2),
+			"month_principal" => number_format($monthlyPrinc,2),
+			"emi"	=> number_format($emi,2),
+			"totAmt" =>number_format($totAmt,2)
 		);
 		echo json_encode($data,true);
+	}
+
+	public function del_finalDocs()
+	{
+		$id = $this->input->post("id");
+		$this->db->where("id",$id);
+		$get = $this->db->get("final_docs")->row_array();
+		$path = "./uploads/".$get['application_id']."/".$get['docs'];
+		@unlink($path);
+		$this->db->where("id",$id);
+		$this->db->delete("final_docs");
 	}
 
 }

@@ -65,7 +65,7 @@ class Apply_loan extends CI_controller
 	public function submit_to_review($application_id='')
 	{
 		$this->db->where("application_id",$application_id);
-		$this->db->update("loans",["loan_status"=>"under-review"]);
+		$this->db->update("loans",["loan_status"=>"under-review",'status_code'=>2]);
 		return redirect(base_url('dashboard/Apply_loan/Submitted_accounts'));
 	}
 
@@ -81,6 +81,7 @@ class Apply_loan extends CI_controller
 		$loan_no = "LN-".mt_rand(00000000000,99999999999);
 		$this->db->where("application_id",$application_id);
 		$this->db->update("loans",["loan_status"=>"approved","loan_ac_no"=>$loan_no]);
+		$this->session->set_flashdata("mdl","Loan Approved. Loan Account Number:<br> ".$loan_no);
 		return redirect(back());
 	}
 
@@ -89,5 +90,52 @@ class Apply_loan extends CI_controller
 		$this->db->where("application_id",$application_id);
 		$this->db->update("loans",["loan_status"=>"rejected","loan_ac_no"=>null]);
 		return redirect(back());
+	}
+
+	public function disburs_loan($application_id)
+	{
+		$this->db->where("application_id",$application_id);
+		$get = $this->db->get("loans");
+		if($get->num_rows()==0)
+		{
+
+		}
+		else
+		{
+			$row = $get->row();
+			$process_charge = $row->approve_amount - $row->disburs_amount;
+			$this->db->where("agent_code",$row->agent_code);
+			$gtAgnt = $this->db->get("agents")->row();
+			$prcnt = $gtAgnt->commission/100;
+			$agent_commission = $process_charge*$prcnt;
+
+			//Admin Trans
+			$notes1 = "Loan Processing Charge against <b>".$row->loan_ac_no."</b>";
+			$data1 = array(
+				"notes"		=>htmlentities($notes1),
+				"dates"		=>date('Y-m-d'),
+				"year"		=>date('Y'),
+				"loan_no"	=>$row->loan_ac_no,
+				"in_amt"	=>$process_charge
+			);
+			$notes2 = "Agent Commission Applied against <b>".$row->loan_ac_no."</b>";
+			$data2 = array(
+				"notes"		=>htmlentities($notes2),
+				"dates"		=>date('Y-m-d'),
+				"year"		=>date('Y'),
+				"loan_no"	=>$row->loan_ac_no,
+				"agent_code"	=>$row->agent_code,
+				"out_amt"	=>$agent_commission
+			);
+
+			$this->db->where("application_id",$application_id);
+			$this->db->update("loans",["loan_status"=>"disbursed"]);
+
+			$this->db->insert("transactions",$data1);
+			$this->db->insert("transactions",$data2);
+
+			$this->session->set_flashdata("Feed","Loan Disbursed Successfully");
+			return redirect(back());
+		}
 	}
 }

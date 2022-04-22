@@ -113,3 +113,8 @@
 		</div>
 	</div>
 </form>
+<?php if($loanData['status_code'] > 1 && $prof['role_slug']=="data-entry-operator"): ?>
+	<script type="text/javascript">
+		location.href = "<?= base_url('dashboard/Apply_loan/Submitted_accounts'); ?>";
+	</script>
+<?php endif; ?>

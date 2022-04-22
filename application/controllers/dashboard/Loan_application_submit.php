@@ -171,7 +171,7 @@ class Loan_application_submit extends CI_controller
 			{
 				$this->db->where("application_id",$data['application_id']);
 				$this->db->update("loans",$data);
-				return redirect(base_url('dashboard/Apply_loan/create_account/step3/'.$data['application_id']));
+				return redirect(base_url('dashboard/Apply_loan/create_account/step4/'.$data['application_id']));
 			}
 			
 		}
@@ -186,6 +186,8 @@ class Loan_application_submit extends CI_controller
 		$application_id = $this->input->post("application_id");
 		$data['doc_name'] = $this->input->post("doc_name");
 		$data['application_id'] = $application_id;
+		$loanData = $this->LoanApplicationModel->get_loan_data_by_id($data['application_id']);
+		
 		$dir_name ='./uploads/'.$application_id;
 				if (!is_dir($dir_name)) {
 				mkdir($dir_name);
@@ -206,10 +208,63 @@ class Loan_application_submit extends CI_controller
         }
         else
         {
+        	if($loanData['step'] < 5)
+			{
+				$datax['step'] = 5;
+			}
             $upload_data = $this->upload->data();
 			$data['doc_img'] = $upload_data['file_name'];
 			$this->db->insert("loan_documents",$data);
+			$this->db->where("application_id",$application_id);
+			$this->db->update("loans",$datax);
 			return redirect(base_url('dashboard/Apply_loan/create_account/step4/'.$data['application_id']));
+		}
+	}
+
+	public function update_step5()
+	{
+		$data = $this->input->post();
+		$loanData = $this->LoanApplicationModel->get_loan_data_by_id($data['application_id']);
+		if($loanData['step'] < 6)
+			{
+				$data['step'] = 6;
+			}
+			
+		$this->db->where("application_id",$data['application_id']);
+		$this->db->update("loans",$data);
+		return redirect(back());
+
+	}
+
+	public function final_documents_upload()
+	{
+		$application_id = $this->input->post("application_id");
+		$data['application_id'] = $application_id;
+		$dir_name ='./uploads/'.$application_id;
+				if (!is_dir($dir_name)) {
+				mkdir($dir_name);
+			}
+		$config['upload_path'] = './uploads/'.$application_id.'/';
+        $config['max_size'] = '*';
+		$config['allowed_types'] = 'png|jpg|PNG|JPG|jpeg|JPEG|gif|GIF'; 
+		$config['remove_spaces'] = TRUE;
+		$fileName = uniqid();
+		$config['file_name'] = $fileName;
+		$this->load->library('upload', $config);
+		if ( ! $this->upload->do_upload('docs'))
+        {
+            $error = array('error' => $this->upload->display_errors());
+            $this->session->set_flashdata("err",$this->upload->display_errors());
+            return redirect(back());
+                
+        }
+        else
+        {
+        	
+            $upload_data = $this->upload->data();
+			$data['docs'] = $upload_data['file_name'];
+			$this->db->insert("final_docs",$data);
+			 return redirect(back());
 		}
 	}
 }

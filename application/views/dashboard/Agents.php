@@ -39,6 +39,10 @@
 									<input type="text" name="mob" class="form-control" required>
 								</div>
 								<div class="form-group">
+									<label>Commission(%)</label>
+									<input type="number" name="commission" class="form-control" required>
+								</div>
+								<div class="form-group">
 									<label>Agent Code</label>
 									<input type="text" name="agent_code" class="form-control" required value="<?= mt_rand(0000000,9999999); ?>" readonly>
 								</div>
@@ -61,6 +65,7 @@
 											<th>Name</th>
 											<th>Phone</th>
 											<th>Agent Code</th>
+											<th>Commission</th>
 											<th>Action</th>
 										</tr>
 									</thead>
@@ -72,6 +77,7 @@
 													<td><?= $usr['agent_name']; ?></td>
 													<td><?= $usr['mob']; ?></td>
 													<td><?= $usr['agent_code']; ?></td>
+													<td><?= $usr['commission']; ?>%</td>
 													<td>
 														<?php if($usr['status']==1): ?>
 															<a href="<?= base_url('dashboard/Agents/change_status/'.$usr['id']); ?>">
@@ -93,6 +99,7 @@
 											<th>Name</th>
 											<th>Phone</th>
 											<th>Agent Code</th>
+											<th>Commission</th>
 											<th>Action</th>
 										</tr>
 									</tfoot>
