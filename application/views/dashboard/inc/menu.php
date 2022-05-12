@@ -27,9 +27,9 @@
 					</ul>
 				</li>
 			<?php endif; ?>
-			<?php if(@$parmsn->review_account ==1 || $prof['role'] == "Super_admin"): ?>
-				<li>Administration</li>
-				<li><a href=""><i class="fas fa-address-card"></i> View Loans</a></li>
+			<?php if(@$parmsn->manage_repayment ==1 || $prof['role'] == "Super_admin"): ?>
+				<li>Loan Repayments</li>
+				<li><a href="<?= base_url('dashboard/View_loans'); ?>"><i class="fas fa-address-card"></i> View Loans</a></li>
 			<?php endif; ?>
 			<?php if(@$parmsn->user_manage =='1' || $prof['role'] == "Super_admin"): ?>
 				<li>Users</li>
@@ -44,8 +44,21 @@
 					</ul>
 				</li>
 			<?php endif; ?>
+			<?php if(@$parmsn->create_account ==1 || $prof['role'] == "Super_admin" || @$parmsn->review_account ==1 || @$parmsn->user_manage == '1' ): ?>
+				<li><a data-toggle="dropdown" id="dropdownMenu2" class="dropdown"data-toggle="dropdown dropdown-toggle" aria-haspopup="true" aria-expanded="false" href="#"><i class="fas fa-users"></i> Customer Accounts <i class="fas fa-chevron-down"></i></a>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+						<li class="">
+							<a href="<?= base_url('dashboard/Add_customer'); ?>"><i class="fas fa-compact-disc"></i> Add Customer</a>
+						</li>
+						<li class=""><a href="<?= base_url('dashboard/All_customers'); ?>">
+							<i class="fas fa-compact-disc"></i> View Customers</a>
+						</li>
+					</ul>
+				</li>
+			<?php endif; ?>
 			<?php if($prof['role'] == "Super_admin"): ?>
 				<li><a href="<?= base_url('dashboard/Agents'); ?>"><i class="fas fa-address-card"></i> Agents</a></li>
+				<li><a href="<?= base_url('dashboard/Investors'); ?>"><i class="fas fa-piggy-bank"></i> Investors</a></li>
 			<?php endif; ?>
 			<?php if($prof['role'] == "Super_admin" || $prof['role_slug'] == "manager"): ?>
 				<li>Acconts</li>
@@ -54,10 +67,13 @@
 			<?php endif; ?>
 			<?php if($prof['role'] == "Super_admin"): ?>
 				<li>Settings</li>
-				<li class=""><a data-toggle="dropdown" id="dropdownMenu3" class="dropdown"data-toggle="dropdown dropdown-toggle" aria-haspopup="true" aria-expanded="true" href="#"><i class="fas fa-cog"></i> Loan Setup <i class="fas fa-chevron-down"></i></a>
+				<li class=""><a data-toggle="dropdown" id="dropdownMenu3" class="dropdown"data-toggle="dropdown dropdown-toggle" aria-haspopup="true" aria-expanded="true" href="#"><i class="fas fa-cog"></i> Settings <i class="fas fa-chevron-down"></i></a>
 					<ul class="dropdown-menu" aria-labelledby="dropdownMenu3">
 						<li>
-							<a href="<?= base_url('dashboard/Emi_state'); ?>"><i class="fas fa-compact-disc"></i> EMI States</a>
+							<a href="<?= base_url('dashboard/App_settings'); ?>"><i class="fas fa-compact-disc"></i> App Setting</a>
+						</li>
+						<li>
+							<a href="<?= base_url('dashboard/Loan_settings'); ?>"><i class="fas fa-compact-disc"></i> Loan settings</a>
 						</li>
 						
 					</ul>

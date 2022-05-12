@@ -29,12 +29,18 @@ body {
 }
 .top-bar .main_logo
 {
+	width: 500px;
 	float: left;
 }
-.top-bar .main_logo .logo h3
+.togle_icon{color: #05436E;
+	cursor: pointer;
+	display: none;
+}
+.top-bar .main_logo .logo span.app_name
 {
 	font-size: 22px;
 	font-weight: bold;
+	padding-left: 20px;
 }
 .top-bar .right_panel
 {
@@ -58,6 +64,16 @@ body {
 	overflow-y: scroll;
 }
 
+.side_menu .side_nav::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.side_menu .side_nav {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 .side_menu .side_nav ul{
 	margin: 0;
 	padding: 0;
@@ -69,7 +85,8 @@ body {
 .side_menu .side_nav ul li a{
 	text-decoration: none;
 	color: #025187;
-	font-weight: bold;
+	font-weight: 600;
+	font-size: 13px;
 }
 .footer {
 	position: fixed;
@@ -297,4 +314,45 @@ table.dataTable tbody td {
 	width: 100%;
 	height: 180px;
 	object-fit: cover;
+}
+.header_title{
+	width: 100%;
+	padding: 6px;
+	background: #ccc;
+}
+.header_title span{
+	font-size: 18px;
+	font-weight: bold;
+}
+.tbl_new{
+	width: 100%;
+	border: solid 1px #ccc;
+}
+.tbl_new th{
+	border: solid 1px #ccc;
+	padding: 4px;
+}
+.tbl_new td{
+	border: solid 1px #ccc;
+	padding: 4px;
+}
+
+@media only screen and (max-width: 991px)
+{
+	.top-bar .main_logo
+	{
+		width: 250px;
+		float: left;
+	}
+	.togle_icon{color: #05436E;
+		cursor: pointer;
+		display: block;
+	}
+	.side_menu{
+		display: none;
+		width: 88%;
+	}
+	.main_content{
+		width: 100%;
+	}
 }

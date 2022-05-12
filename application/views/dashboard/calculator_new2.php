@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<?php $this->load->view("inc/layout"); ?>
+</head>
+<body>
+	<!--Top Bar-->
+<?php include("inc/headers.php"); ?>
+<!--Top Bar end-->
+<div class="container-fluid">
+	<div class="row">
+		<?php include("inc/menu.php"); ?>
+		<div class="main_content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="row">
+							<div class="form-group col-md-12 bg-grey">
+								<h5>EMI Calculation</h5>
+							</div>
+							<div class="form-group col-md-12">
+								<label>Requested Amount</label>
+								<input type="text" id="ra" name="request_amount" class="form-control" value="0">
+							</div>
+							<div class="form-group col-md-12">
+								<label>EMI Period (Months)</label>
+								<input type="number" id="pom" name="emi_period" class="form-control" required>
+							</div>
+							<div class="form-group col-md-12">
+								<label>Rate of Interest (<span id="roi_lbl">%</span> / Annual)</label>
+								<input type="text" id="roi" name="rate_of_interest" class="form-control" value="0" required>
+							</div>
+							<div class="form-group col-md-12">
+								<label>Calculation Type</label>
+								<select onchange="showStrt(this.value)" id="cal_type" name="cal_type" class="form-control">
+									<option value="flat">Flat</option>
+									<option value="compound">Compound</option>
+								</select>
+							</div>
+							<div class="form-group col-md-12" id="strt" style="display:none">
+								<label>EMI Start Date</label>
+								<input type="date" id="start_date" class="form-control">
+							</div>
+							<div class="col-md-12">
+								<button onclick="CalEmi()" type="button">Calculate</button>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-8">
+						<div id="calCulateDiv" style="display: block;">
+							<div class="col-md-12">
+									<div class="card">
+										<div class="card-body">
+											<div class="row justify-content-center">
+												<div class="col-md-18">
+													<table class="table table-bordered">
+														<tr>
+															<th>Principle Amount:</th>
+															<td id="princ_amt">0</td>
+														</tr>
+														<tr>
+															<th>Rate of Interest:</th>
+															<td id="intr_rate_amt">0</td>
+														</tr>
+														<tr>
+															<th>Interest per Month:</th>
+															<td id="intr_amt">0</td>
+														</tr>
+														<tr>
+															<th>EMI Per Month:</th>
+															<td id="emi_amt">0</td>
+														</tr>
+														<tr>
+															<th>Total Repayment Amount:</th>
+															<td id="tot_amt">0</td>
+														</tr>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="comp_emi"></div>
+						</div>
+					</div>
+					
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<?php include("inc/footer.php"); ?>
+<?php $this->load->view("inc/js");?>
+<script type="text/javascript">
+	function CalEmi()
+	{
+		var ra = $("#ra").val();
+		var pom = $("#pom").val();
+		var roi = $("#roi").val();
+		var cal_type = $("#cal_type").val();
+		var start_date = $("#start_date").val();
+		if(cal_type == 'flat')
+		{
+			$.post("<?= base_url('dashboard/AjaxController/calculate_estimate_emi/'); ?>",{
+				ra: ra,
+				pom: pom,
+				roi: roi
+			},function(resp){
+				obj = JSON.parse(resp);
+				$("#princ_amt").html("&#8377;"+ra);
+				$("#intr_rate_amt").html(roi+"%");
+				$("#intr_amt").html("&#8377;"+obj.intr_month+"/Month");
+				$("#emi_amt").html("&#8377;"+obj.emi+"/Month");
+				$("#tot_amt").html("&#8377;"+obj.totAmt);
+				$("#calCulateDiv").show();
+				$("#comp_emi").hide();
+			});
+		}
+		else
+		{
+			$.post("<?= base_url('dashboard/Calculator/get_emi'); ?>",{
+				ra: ra,
+				pom: pom,
+				roi: roi,
+				start_date: start_date
+			},function(resp){
+				$("#comp_emi").html(resp);
+				$("#calCulateDiv").hide();
+				$("#comp_emi").show();
+			})
+		}
+	}
+	function showStrt(vals)
+	{
+		if(vals == 'compound')
+		{
+			$("#strt").show();
+		}
+		else
+		{
+			$("#strt").hide();
+		}
+	}
+</script>
+</body>
+</html>

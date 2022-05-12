@@ -8,18 +8,7 @@
 </head>
 <body>
 	<!--Top Bar-->
-<div class="top-bar">
-	<div class="main_logo">
-		<div class="logo">
-			<h3>Software Name</h3>
-		</div>
-	</div>
-	<div class="right_panel">
-		<div class="logout">
-			<a href="<?= base_url('dashboard/Home/logout'); ?>">Logout</a>
-		</div>
-	</div>
-</div>
+<?php include("inc/headers.php"); ?>
 <!--Top Bar end-->
 <div class="container-fluid">
 	<div class="row">
@@ -41,6 +30,17 @@
 										<input type="text" name="amount" class="form-control" required>
 									</div>
 									<div class="form-group">
+										<label>Invested By</label>
+										<select name="inv_by" class="form-control">
+											<option value="self">Self</option>
+											<?php if(!empty($investors)): ?>
+												<?php foreach($investors as $invs): ?>
+													<option value="<?= $invs['id']; ?>"><?= $invs['investor_name']; ?></option>
+												<?php endforeach; ?>
+											<?php endif; ?>
+										</select>
+									</div>
+									<div class="form-group">
 										<label>Notes</label>
 										<textarea name="notes" class="form-control" required></textarea>
 									</div>
@@ -59,7 +59,7 @@
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table class="table table-bordered" id="example2">
+									<table class="table table-bordered" id="example">
 										<thead>
 											<tr>
 												<th>SL</th>
@@ -73,14 +73,27 @@
 											<?php if(!empty($data)): ?>
 												<?php $s = 1; foreach($data as $key): $sl = $s++; ?>
 												<?php $dt = date_create($key['dates']); ?>
+												<?php if($key['investor']==null)
+												{
+													$notess = "";
+												}
+												elseif($key['investor']=="self")
+												{
+													$notess = "Invested By Self";
+												}
+												else
+												{
+													$getInvestor = $this->InvestorModel->get_investorBYId($key['investor']);
+													$notess = "Invested By ".$getInvestor['investor_name'];
+												} ?>
 													<tr>
 														<td><?= $sl; ?></td>
 														<td><?= date_format($dt, 'd-m-Y'); ?></td>
 														<td>
-															<?= html_entity_decode($key['notes']); ?>
+															<?= html_entity_decode($key['notes']); ?><br><b class="text-info"><?= $notess; ?></b>
 														</td>
-														<td><?= $key['in_amt']; ?></td>
-														<td><?= $key['out_amt']; ?></td>
+														<td>&#8377;<?= $key['in_amt']; ?></td>
+														<td>&#8377;<?= $key['out_amt']; ?></td>
 													</tr>
 												<?php endforeach ?>
 											<?php endif; ?>

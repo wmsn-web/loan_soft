@@ -8,18 +8,7 @@
 </head>
 <body>
 	<!--Top Bar-->
-<div class="top-bar">
-	<div class="main_logo">
-		<div class="logo">
-			<h3>Software Name</h3>
-		</div>
-	</div>
-	<div class="right_panel">
-		<div class="logout">
-			<a href="<?= base_url('dashboard/Home/logout'); ?>">Logout</a>
-		</div>
-	</div>
-</div>
+<?php include("inc/headers.php"); ?>
 <!--Top Bar end-->
 <div class="container-fluid">
 	<div class="row">
@@ -36,6 +25,7 @@
 										<tr>
 											<th>SL</th>
 											<th>Name</th>
+											<th>username</th>
 											<th>Email</th>
 											<th>Phone</th>
 											<th>Role</th>
@@ -48,12 +38,25 @@
 												<tr>
 													<td><?= $sl; ?></td>
 													<td><?= $usr['name']; ?></td>
+													<td><?= $usr['user_admin']; ?></td>
 													<td><?= $usr['email']; ?></td>
 													<td><?= $usr['phone']; ?></td>
 													<td><?= $usr['role']; ?></td>
 													<td>
 														<a href="<?= base_url('dashboard/All_user/Edit_user/'.$usr['id']); ?>">
-														<button class="btn btn-warning btn-sm">Edit / View User</button>
+														<button class="btn btn-warning btn-sm">Edit / View User</button></a>
+														<?php if($usr['status']==0):
+															$sts = "<span class='text-danger'>Deactive</span>";
+
+														else:
+															$sts = "<span class='text-success'>Active</span>";
+														endif; 
+														 ?>
+														 <input type="hidden" id="status" value="<?=$usr['status']; ?>">
+															<a id="ac__<?= $usr['id']; ?>" href="#" onclick="changeUserStatus('<?= $usr['id']; ?>')" class="text-danger">
+																<?= $sts; ?>
+															</a>
+														
 													</td>
 												</tr>
 											<?php endforeach; ?>
@@ -72,7 +75,43 @@
 <?php include("inc/footer.php"); ?>
 <?php $this->load->view("inc/js");?>
 <script type="text/javascript">
-	
+	function changeUserStatus(id)
+	{
+		var sts = $("#status").val();
+		if(sts == 0)
+		{
+			var res = confirm("Activate this user? Please Click OK to Proceed.");
+			if(res == true)
+			{
+				//logic to activate
+				$.post("<?= base_url('dashboard/AjaxController/change_user_status'); ?>",{
+					id: id
+				},function(resp){
+					$("#ac__"+id).html('<span class="text-success">Active</span>');
+					$("#ac__"+id).css("color","#090");
+					$("#status").val(1);
+				})
+				
+
+			}
+		}
+		else
+		{
+			var res = confirm("Deactivate this user? Please Click OK to Proceed.");
+			if(res == true)
+			{
+				//logic to Deactivate
+				$.post("<?= base_url('dashboard/AjaxController/change_user_status'); ?>",{
+					id: id
+				},function(resp){
+					$("#ac__"+id).html('<span class="text-danger">Deactive</span>');
+					$("#ac__"+id).css("color","#f00");
+					$("#status").val(0);
+				})
+					
+			}
+		}
+	}
 </script>
 </body>
 </html>

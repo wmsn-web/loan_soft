@@ -8,24 +8,18 @@
 </head>
 <body>
 	<!--Top Bar-->
-<div class="top-bar">
-	<div class="main_logo">
-		<div class="logo">
-			<h3>Software Name</h3>
-		</div>
-	</div>
-	<div class="right_panel">
-		<div class="logout">
-			<a href="<?= base_url('dashboard/Home/logout'); ?>">Logout</a>
-		</div>
-	</div>
-</div>
+<?php include("inc/headers.php"); ?>
 <!--Top Bar end-->
 <div class="container-fluid">
 	<div class="row">
 		<?php include("inc/menu.php"); ?>
 		<div class="main_content">
 			<div class="row">
+				<div class="col-md-12">
+					<a href="<?= base_url('dashboard/Emi_state'); ?>"><button class="btn_new">EMI Tenure</button></a>
+					<a href="<?= base_url('dashboard/Loan_settings'); ?>"><button class="btn_new">Loan Settings</button></a>
+					<a href="<?= base_url('dashboard/Loan_Category'); ?>"><button class="btn_new">Loan Category</button></a>
+				</div>
 				<div class="col-md-4">
 					<div class="card">
 						<div class="card-header">

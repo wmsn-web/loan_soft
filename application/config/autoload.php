@@ -89,7 +89,14 @@ $autoload['drivers'] = array();
 |
 |	$autoload['helper'] = array('url', 'file');
 */
-$autoload['helper'] = array('url','file','html','slugifyhelp','loanhelper');
+$autoload['helper'] = array(
+	'url',
+	'file',
+	'html',
+	'slugifyhelp',
+	'loanhelper',
+	'fundbal'
+);
 
 /*
 | -------------------------------------------------------------------
@@ -132,4 +139,10 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('LoanApplicationModel','UserModel','AccountModel');
+$autoload['model'] = array(
+	'LoanApplicationModel',
+	'UserModel',
+	'AccountModel',
+	'CustomerModel',
+	'InvestorModel'
+);

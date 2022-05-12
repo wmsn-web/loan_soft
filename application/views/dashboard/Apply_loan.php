@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html>
 <head>
 	<meta charset="utf-8">
@@ -7,7 +7,7 @@
 	<?php $this->load->view("inc/layout"); ?>
 </head>
 <body>
-	<?php include("inc/topbar.php"); ?>
+	<?php include("inc/headers.php"); ?>
 <!--Top Bar end-->
 
 <div class="container-fluid">
@@ -81,26 +81,53 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		var vals = $("#loanType").val();
-		var dpay = $("#dpys").val();
-		$.post("<?= base_url('dashboard/AjaxController/check_down_payment'); ?>",{
-			type_slug: vals
-		},function(resp){
-			var obj = JSON.parse(resp);
-			if(obj.down_payment == "enabled")
-			{
-				$("#dpay").show();
-				$(".down_pay").attr("required",true);
-			}
-			else
-			{
-				$("#dpay").hide();
-				$(".down_pay").attr("required",false);
-				$(".down_pay").val("");
-				$("#dpAmt").hide();
-				$(".down_pay_amt").attr("required",false);
-				$(".down_pay_amt").val("");
-			}
-		});
+		//alert(vals)
+		if(vals == "")
+		{
+
+		}
+		else
+		{
+			var dpay = $("#dpys").val();
+			$.post("<?= base_url('dashboard/AjaxController/check_down_payment'); ?>",{
+				type_slug: vals
+			},function(resp){
+				var obj = JSON.parse(resp);
+				if(obj.down_payment == "enable")
+				{
+					$("#dpay").show();
+					$(".down_pay").attr("required",true);
+				}
+				else
+				{
+					$("#dpay").hide();
+					$(".down_pay").attr("required",false);
+					$(".down_pay").val("");
+					$("#dpAmt").hide();
+					$(".down_pay_amt").attr("required",false);
+					$(".down_pay_amt").val("");
+				}
+				if(obj.loan_cat == "product_mobile")
+				{
+					$("#products").show();
+				}
+				else
+				{
+					$("#products").hide();
+				}
+				if(obj.loan_cat == "business")
+				{
+					$("#business").show();
+				}
+				else
+				{
+					$("#business").hide();
+				}
+
+				//alert(obj.loan_cat);
+			});
+		}
+			
 		if(dpay == "yes")
 		{
 			$("#dpAmt").show();
@@ -118,8 +145,9 @@
 		$.post("<?= base_url('dashboard/AjaxController/check_down_payment'); ?>",{
 			type_slug: vals
 		},function(resp){
+			//alert(resp);
 			var obj = JSON.parse(resp);
-			if(obj.down_payment == "enabled")
+			if(obj.down_payment == "enable")
 			{
 				$("#dpay").show();
 				$(".down_pay").attr("required",true);
@@ -132,6 +160,39 @@
 				$("#dpAmt").hide();
 				$(".down_pay_amt").attr("required",false);
 				$(".down_pay_amt").val("");
+			}
+			if(obj.loan_cat == "product_mobile")
+			{
+				$("#products").show();
+				$(".hd_pro").attr("required",true);
+			}
+			else
+			{
+				$("#products").hide();
+				$(".hd_pro").val("");
+				$(".hd_pro").attr("required",false);
+			}
+			if(obj.loan_cat == "business")
+			{
+				$("#business").show();
+				$(".hd_bus").attr("required",true);
+			}
+			else
+			{
+				$("#business").hide();
+				$(".hd_bus").val("");
+				$(".hd_bus").attr("required",false);
+			}
+			if(obj.loan_cat == "vehical")
+			{
+				$("#vehicals").show();
+				$(".hd_veh").attr("required",true);
+			}
+			else
+			{
+				$("#vehicals").hide();
+				$(".hd_veh").val("");
+				$(".hd_veh").attr("required",false);
 			}
 		})
 	}
@@ -283,11 +344,28 @@
 		$("#mdlTxt").html('<?= $mdl; ?>');
 		$("#congr_modal").modal('show');
 	<?php endif; ?>
-	<?php if($loanData['loan_status']=="disbursed"): ?>
+	<?php if(@$loanData['loan_status']=="disbursed"): ?>
 		$("input").attr("disabled",true);
 		$("select").attr("disabled",true);
 		$("button").attr("disabled",true);
 	<?php endif; ?>
+	function fillExistinUser(id,appId)
+	{
+		if(id == '')
+		{
+
+		}
+		else
+		{
+			$.post("<?= base_url('dashboard/AjaxController/fill_user'); ?>",{
+				id: id,
+				app_id: appId
+			},function(resp){
+				location.href='';
+
+			})
+		}
+	}
 </script>
 </body>
 </html>

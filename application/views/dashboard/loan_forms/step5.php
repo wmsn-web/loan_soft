@@ -2,7 +2,8 @@
 <?php $apl_id = $this->uri->segment(5); ?>
 <form action="<?= base_url('dashboard/Loan_application_submit/update_step5'); ?>" method="post" data-parsley-validate novalidate>
 	<h4>Application ID: <?= $this->uri->segment(5); ?></h4><?= br(2); ?>
-	<div class="row">
+	<input type="hidden" id="loanType" value="<?= $loanData['loan_type']; ?>">
+	<div id="products" class="row">
 		<div class="form-group col-md-12 bg-grey">
 			<h5>Office Use</h5>
 		</div>
@@ -32,6 +33,90 @@
 			</div>
 			<div class="form-group col-md-4"></div>
 		<?php endif; ?>
+	</div>
+		<div id="business" class="row" style="display:none">
+			<div class="form-group col-md-12 bg-grey">
+				<h5>Business Information</h5>
+			</div>
+			<div class="form-group col-md-4">
+				<label>Business / Company Name</label>
+				<input type="text" name="business_name" class="form-control" value="<?= $loanData['business_name']; ?>">
+			</div>
+			<div class="form-group col-md-4">
+				<label>Business / Company Type</label>
+				<select name="company_type" class="form-control">
+					<option value="<?= $loanData['company_type']; ?>"><?= $loanData['company_type']; ?></option>
+					<option value="">Select</option>
+					<option value="Partnership">Partnership</option>
+					<option value="LLP">LLP</option>
+					<option value="Private Limited">Private Limited</option>
+					<option value="Public Ltd">Public Ltd</option>
+					<option value="HUF">HUF</option>
+					<option value="Proprietorship">Proprietorship</option>
+				</select>
+			</div>
+			<div class="form-group col-md-4">
+				<label>Business Nature</label>
+				<select name="business_nature" class="form-control">
+					<option value="<?= $loanData['business_nature']; ?>"><?= $loanData['business_nature']; ?></option>
+					<option value="">Select</option>
+					<option value="Agriculture and Allied Consultation">Agriculture & Allied Consultation</option>
+					<option value="Manufacturing">Manufacturing</option>
+					<option value="Retail Trading">Retail Trading</option>
+					<option value="Wholesale Trading">Wholesale Trading</option>
+					<option value="Service">Service</option>
+				</select>
+			</div>
+			<div class="form-group col-md-4">
+				<label>Date of Incorporation</label>
+				<input type="date" name="date_incorporation" value="<?= $loanData['date_incorporation']; ?>" class="form-control">
+			</div>
+			<div class="form-group col-md-4">
+				<label>Business PAN</label>
+				<input type="text" name="business_pan" value="<?= $loanData['business_pan']; ?>" class="form-control">
+			</div>
+			<div class="form-group col-md-4">
+				<label>Yearly Turnover</label>
+				<input type="number" name="turnover" value="<?= $loanData['turnover']; ?>" class="form-control">
+			</div>
+			<div class="form-group col-md-12">
+				<h5>Office Address</h5>
+			</div>
+			<div class="form-group col-md-4">
+				<label>City</label>
+				<input type="text" name="b_city" value="<?= $loanData['b_city']; ?>" class="form-control">
+			</div>
+			<div class="form-group col-md-4">
+				<label>State</label>
+				<input type="text" name="b_state" value="<?= $loanData['b_state']; ?>" class="form-control">
+			</div>
+			<div class="form-group col-md-4">
+				<label>PIN</label>
+				<input type="text" name="b_pin" value="<?= $loanData['b_state']; ?>" class="form-control">
+			</div>
+		</div>
+		<div class="row" id="vehicals" style="display:none">
+			<div class="form-group col-md-12 bg-grey">
+				<h5>Information of vehical to be purchased</h5>
+			</div>
+			<div class="form-group col-md-4">
+				<label>Maker and Model of Vehical</label>
+				<input type="text" name="vehical_model" class="form-control hd_veh" value="<?= $loanData['vehical_model']; ?>">
+			</div>
+			<div class="form-group col-md-4">
+				<label>Dealer Name</label>
+				<input type="text" name="dealer_name" class="form-control hd_veh" value="<?= $loanData['dealer_name']; ?>">
+			</div>
+			<div class="form-group col-md-4">
+				<label>Chassis Number</label>
+				<input type="text" name="chassis_no" class="form-control hd_veh" value="<?= $loanData['chassis_no']; ?>">
+			</div>
+			<div class="form-group col-md-4">
+				<label>On Road Price of Vehical</label>
+				<input type="text" name="vehical_price" class="form-control hd_veh" value="<?= $loanData['vehical_price']; ?>">
+			</div>
+		</div>
+		<div class="row">
 		<div class="form-group col-md-3">
 			<label>Approved Amount</label>
 			<input type="text" name="approve_amount" value="<?= $loanData['approve_amount']; ?>" class="form-control" required>

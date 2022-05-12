@@ -1,10 +1,23 @@
 <?php $apl_id =  $this->uri->segment(5); ?>
 <form id="step_form" action="<?= base_url('dashboard/Loan_application_submit/submit_step2'); ?>" method="post" enctype="multipart/form-data">
 	<h4>Application ID: <?= $this->uri->segment(5); ?></h4><?= br(2); ?>
+	<h6 class="text-info">Select Borrower Information from Existing Account</h6>
+	<div class="form-group col-md-4">
+		<select onchange="fillExistinUser(this.value,'<?= $apl_id; ?>')" class="form-control">
+			<option value="">Select From Existing Account</option>
+			<option value="xx">New User</option>
+			<?php if(!empty($users)): ?>
+				<?php foreach($users as $usr): ?>
+					<option value="<?= $usr['id']; ?>"><?= $usr['full_name']; ?></option>
+				<?php endforeach; ?>
+			<?php endif; ?>
+		</select>
+	</div>
 	<div class="row">
 		<div class="form-group col-md-12 bg-grey">
 			<h5>BORROWER INFORMATION</h5>
 		</div>
+		<div id="xxx"></div>
 		<div class="form-group col-md-4">
 			<label>Full Name</label>
 			<input type="text" name="full_name" class="form-control" value="<?= $loanData['full_name']; ?>" required>

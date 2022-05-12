@@ -8,18 +8,7 @@
 </head>
 <body>
 	<!--Top Bar-->
-<div class="top-bar">
-	<div class="main_logo">
-		<div class="logo">
-			<h3>Software Name</h3>
-		</div>
-	</div>
-	<div class="right_panel">
-		<div class="logout">
-			<a href="<?= base_url('dashboard/Home/logout'); ?>">Logout</a>
-		</div>
-	</div>
-</div>
+<?php include("inc/headers.php"); ?>
 <!--Top Bar end-->
 <div class="container-fluid">
 	<div class="row">
@@ -54,12 +43,18 @@
 													<td><?= $sl; ?></td>
 													<td>
 														<?= $key['application_id']; ?><br>
-														<b class="text-info"> <?=  $gtadmin['name']; ?>
+														<b class="text-info"> <?=  $gtadmin['name']; ?></b><br><span class="text-danger"><?= unslugify($key['loan_type']); ?></span>
 													</td>
 													<td><?= $key['loan_ac_no']; ?></td>
 													<td><?= $key['full_name']; ?></td>
 													<td><?= $key['cont_number']; ?></td>
-													<td><?= unslugify($key['loan_status']); ?></td>
+													<td>
+														<?php if($key['closing_status']=="open"): ?>
+															<?= unslugify($key['loan_status']); ?>
+														<?php else:?>
+															<?= unslugify($key['closing_status']); ?>
+														<?php endif; ?>
+													</td>
 													<td>
 														<?php if($prof['role_slug']=="data-entry-operator" && $key['loan_status']=="pending" || $prof['role_slug']=="super_admin"): ?>
 															<a href="<?= base_url('dashboard/Apply_loan/create_account/step1/'.$key['application_id']); ?>">

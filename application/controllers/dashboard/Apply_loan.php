@@ -24,16 +24,20 @@ class Apply_loan extends CI_controller
 	{
 		if(!empty($this->uri->segment(5)))
 		{
+			$users = $this->LoanApplicationModel->get_existing_users();
 			$loanData = $this->LoanApplicationModel->get_loan_data_by_id($this->uri->segment(5));
 			$loanTypes = $this->LoanApplicationModel->get_loan_types();
-			$this->load->view("dashboard/Apply_loan",["loan_type"=>$loanTypes,"loanData"=>$loanData]);
+			$this->load->view("dashboard/Apply_loan",["loan_type"=>$loanTypes,"loanData"=>$loanData,"users"=>$users]);
 		}
 		else
 		{
 			$loanTypes = $this->LoanApplicationModel->get_loan_types();
-			$loanData = $this->LoanApplicationModel->get_loan_data_by_id(11);
-			$this->load->view("dashboard/Apply_loan",["loan_type"=>$loanTypes,"loanData"=>$loanData]);
+			$loanData = $this->LoanApplicationModel->get_loan_data_by_id();
+			$users = $this->LoanApplicationModel->get_existing_users();
+			$this->load->view("dashboard/Apply_loan",["loan_type"=>$loanTypes,"loanData"=>$loanData,"users"=>$users]);
 		}
+
+		
 	}
 
 	public function review_account()
@@ -104,6 +108,7 @@ class Apply_loan extends CI_controller
 		{
 			$row = $get->row();
 			//Check Wallet Balance
+			/*
 			$this->db->select_sum("in_amt");
 			$in = $this->db->get("transactions")->row();
 			$tot_in = $in->in_amt;
@@ -113,7 +118,8 @@ class Apply_loan extends CI_controller
 			$tot_out = $out->out_amt;
 
 			$reamin = $tot_in - $tot_out;
-			$bal = $reamin;
+			*/
+			$bal = fund_bal();
 			//Check Wallet Balance
 			if($bal < $row->approve_amount)
 			{
@@ -155,12 +161,16 @@ class Apply_loan extends CI_controller
 					"out_amt"	=>$row->approve_amount
 				);
 
+				$fundBal = $bal - $row->disburs_amount;
+
 				$this->db->where("application_id",$application_id);
 				$this->db->update("loans",["loan_status"=>"disbursed"]);
 
 				$this->db->insert("transactions",$data3);
 				$this->db->insert("transactions",$data2);
 				$this->db->insert("transactions",$data1);
+
+				modify_fund_bal($fundBal);
 				
 
 				$this->session->set_flashdata("Feed","Loan Disbursed Successfully");

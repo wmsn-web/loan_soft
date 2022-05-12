@@ -28,3 +28,29 @@ if(!function_exists('all_final_docs'))
     return $data;
   }
 }
+if(!function_exists('loan_setup')) {
+  function loan_setup() { 
+      
+      $CI = get_instance();
+      $get = $CI->db->get("loan_setups")->row_array();
+      return $get;
+  } 
+}
+
+if(!function_exists('all_settings')) {
+  function all_settings() { 
+      
+      $CI = get_instance();
+      $get = $CI->db->get("settings")->row_array();
+      return $get;
+  } 
+}
+
+if(!function_exists('pdf_img_dir'))
+{
+  function pdf_img_dir($img,$dir)
+  {
+    $str = $_SERVER["DOCUMENT_ROOT"].'/myPro/loan_soft/uploads/'.$dir.'/'.$img;
+    return $str;
+  }
+}

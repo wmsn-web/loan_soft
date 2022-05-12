@@ -37,4 +37,11 @@ class AccountModel extends CI_model
 
 		return $bal;
 	}
+
+	public function get_investors()
+	{
+		$this->db->order_by("investor_name","ASC");
+		$data = $this->db->get("investors")->result_array();
+		return $data;
+	}
 }

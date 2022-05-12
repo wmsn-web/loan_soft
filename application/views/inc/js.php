@@ -24,5 +24,13 @@
 	$(document).ready(function(){
 		$(".flasgd-danger").fadeOut(8000);
 		$(".flasgd-success").fadeOut(8000);
+
 	});
+	/*
+	setInterval(function(){
+        $.get('<?= base_url('dashboard/CreateCron'); ?>', function(data) {
+            console.log(data);
+         });
+    }, 10000);
+    */
 </script>

@@ -47,7 +47,7 @@ class Loan_application_submit extends CI_controller
 		{
 			$this->db->where("application_id",$data['application_id']);
 			$this->db->update("loans",$data);
-			$this->session->set_flashdata("err","Application Updated Successfully!");
+			$this->session->set_flashdata("Feed","Application Updated Successfully!");
 			return redirect(base_url('dashboard/Apply_loan/create_account/step2/'.$data['application_id']));
 			
 		}
@@ -72,6 +72,30 @@ class Loan_application_submit extends CI_controller
 		$chk = $this->db->get("loans")->num_rows();
 		if($chk > 0)
 		{
+			$usr['full_name'] = $data['full_name'];
+			$usr['gender'] = $data['gender'];
+			$usr['dob'] = $data['dob'];
+			$usr['cont_number'] = $data['cont_number'];
+			$usr['email'] = $data['email'];
+			$usr['adress'] = $data['adress'];
+			$usr['city'] = $data['city'];
+			$usr['pin'] = $data['pin'];
+			$usr['state'] = $data['state'];
+			$usr['same_addr'] = $data['same_addr'];
+			$usr['r_adress'] = $data['r_adress'];
+			$usr['r_city'] = $data['r_city'];
+			$usr['r_pin'] = $data['r_pin'];
+			$usr['r_state'] = $data['r_state'];
+			$usr['v_id'] = $data['v_id'];
+			$usr['adhar_no'] = $data['adhar_no'];
+			$usr['pan_no'] = $data['pan_no'];
+
+			$this->db->where("pan_no",$usr['pan_no']);
+			$chkUser = $this->db->get("users")->num_rows();
+			if($chkUser == 0)
+			{
+				$this->db->insert("users",$usr);
+			}
 			
 			$pro_img = $_FILES['pro_img']['name'];
 			if(!empty($pro_img))
@@ -103,6 +127,7 @@ class Loan_application_submit extends CI_controller
 					$data['pro_img'] = $upload_data['file_name'];
 					$this->db->where("application_id",$data['application_id']);
 					$this->db->update("loans",$data);
+					$this->session->set_flashdata("Feed","Application Updated Successfully!");
 					return redirect(base_url('dashboard/Apply_loan/create_account/step3/'.$data['application_id']));
 				}
 			}
@@ -211,6 +236,10 @@ class Loan_application_submit extends CI_controller
         	if($loanData['step'] < 5)
 			{
 				$datax['step'] = 5;
+			}
+			else
+			{
+				$datax['step'] = $loanData['step'];
 			}
             $upload_data = $this->upload->data();
 			$data['doc_img'] = $upload_data['file_name'];

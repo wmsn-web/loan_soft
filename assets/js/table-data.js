@@ -3,7 +3,7 @@ $(function(e) {
 	var table = $('#example').DataTable({
 		lengthChange: false,
 		buttons: [ 'copy', 'excel', 'pdf', 'colvis' ],
-		responsive: true,
+		responsive: false,
 		language: {
 			searchPlaceholder: 'Search...',
 			sSearch: '',
